@@ -3,27 +3,37 @@ server:
 
 
 spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: html
+    mode: HTML5
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+    cache: false
+  resources:
+    static-locations: classpath:/static/, classpath:/templates/
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/laboratory?useUnicode=true&characterEncoding=UTF-8&userSSL=false&serverTimezone=UTC
-    password: pwd
+    url: jdbc:mysql://101.43.9.197:3306/util?useUnicode=true&characterEncoding=UTF-8&userSSL=false&serverTimezone=UTC
+    password: Lzq951201@!
     username: root
   redis:
-    password: 123465
-    host: 127.0.0.1
+    host: 101.43.9.197
     database: 0
     port: 6379
-  data:
-    mongodb:
-      host: 127.0.0.1
-      port: 27017
-      database: lab
+  #  data:
+  #    mongodb:
+  #      host: 127.0.0.1
+  #      port: 27017
+  #      database: lab
   mail:
     host: smtp.qq.com
-    username: xxx@qq.com
-    password: xxx
+    username: 8768611@qq.com
+    password: buyxuvpfdkzecahj
     default-encoding: UTF-8
-    nickname: xxx@qq.com
+    nickname: 8768611@qq.com
     #其他此参数
     properties:
       mail:
@@ -97,28 +107,29 @@ pigeon:
     - '/free/**'
     - '/dict/**'
     - '/attachment/**'
+    - '/jd.html'
 
-  job:
-    admin:
-      addresses: http://127.0.0.1:1150/xxl-job-admin
-    accessToken: 'xxx'
-    executor:
-      appname: laboratory
-      address:
-      ip:
-      port: 1151
-      logPath: logs/job/
-      logRetentionDays: 30
-  rocketmq:
-    name-server: 127.0.0.1:9876
-    producer:
-      group: lab-producer
-    consumer:
-      group: lab-default-consumer
-      topic: lab-default-topic
+  #  job:
+  #    admin:
+  #      addresses: http://127.0.0.1:1150/xxl-job-admin
+  #    accessToken: 'xxx'
+  #    executor:
+  #      appname: laboratory
+  #      address:
+  #      ip:
+  #      port: 1151
+  #      logPath: logs/job/
+  #      logRetentionDays: 30
+  #  rocketmq:
+  #    name-server: 127.0.0.1:9876
+  #    producer:
+  #      group: lab-producer
+  #    consumer:
+  #      group: lab-default-consumer
+  #      topic: lab-default-topic
   lab:
     adminNotify:
-      mail: xxx@qq.com
+      mail: 8768611@qq.com
       enabled: true
   file:
     type: s3

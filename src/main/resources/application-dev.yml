@@ -3,21 +3,52 @@ server:
 
 
 spring:
-  main:
-    allow-bean-definition-overriding: true
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: html
+    mode: HTML5
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+    cache: false
+  resources:
+    static-locations: classpath:/static/, classpath:/templates/
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/laboratory?useUnicode=true&characterEncoding=UTF-8&userSSL=false&serverTimezone=UTC
-    password: 114130
+    url: jdbc:mysql://101.43.9.197:3306/util?useUnicode=true&characterEncoding=UTF-8&userSSL=false&serverTimezone=UTC
+    password: Lzq951201@!
     username: root
   redis:
-    password: 123465
-    host: 127.0.0.1
+    host: 101.43.9.197
     database: 0
     port: 6379
+  #  data:
+  #    mongodb:
+  #      host: 127.0.0.1
+  #      port: 27017
+  #      database: lab
+  mail:
+    host: smtp.qq.com
+    username: 8768611@qq.com
+    password: buyxuvpfdkzecahj
+    default-encoding: UTF-8
+    nickname: 8768611@qq.com
+    #其他此参数
+    properties:
+      mail:
+        smtp:
+          #如果用ssl方式，需要配置以下属性
+          auth: true
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+            port: 465
+          starttls:
+            enable: true
+            required: true
 
 logging:
-  config: classpath:logback-lab-dev.xml
+  config: classpath:logback-lab-prod.xml
 
 pigeon:
   knife4j:
@@ -32,6 +63,15 @@ pigeon:
   log:
     path: logs-dev
     level: info
+    type: 'MONGO'
+    enabled: true
+    ali:
+      endpoint: cn-beijing.log.aliyuncs.com
+      accessKeyId: LTA***Tab
+      accessKeySecret: MR****5
+      project: lab
+      logStore: java
+      mdcFields: trace-id
   strategy:
     base-package: cn.yiidii.openapi
   netty:
@@ -63,25 +103,40 @@ pigeon:
     - '/jd/**'
     - '/telecom/**'
     - '/wm/**'
+    - '/test/**'
     - '/free/**'
-  job:
-    admin:
-      addresses: http://127.0.0.1:8080/xxl-job-admin
-    accessToken: 'pigeonXXLJob'
-    executor:
-      appname: laboratory
-      address:
-      ip:
-      port: 1151
-      logPath: logs/job/
-      logRetentionDays: 30
-  rocketmq:
-    name-server: 127.0.0.1:9876
-    producer:
-      group: lab-default-producer
-    consumer:
-      group: lab-default-consumer
-      topic: lab-default-topic
+    - '/dict/**'
+    - '/attachment/**'
+    - '/jd.html'
 
-
-debug: false
+  #  job:
+  #    admin:
+  #      addresses: http://127.0.0.1:1150/xxl-job-admin
+  #    accessToken: 'xxx'
+  #    executor:
+  #      appname: laboratory
+  #      address:
+  #      ip:
+  #      port: 1151
+  #      logPath: logs/job/
+  #      logRetentionDays: 30
+  #  rocketmq:
+  #    name-server: 127.0.0.1:9876
+  #    producer:
+  #      group: lab-producer
+  #    consumer:
+  #      group: lab-default-consumer
+  #      topic: lab-default-topic
+  lab:
+    adminNotify:
+      mail: 8768611@qq.com
+      enabled: true
+  file:
+    type: s3
+    endpoint: oss-cn-beijing.aliyuncs.com
+    customDomain: https://xxx.oss-cn-beijing.aliyuncs.com
+    bucketName: xxx
+    region: cn-beijing
+    accessKey: xxx
+    secret-key: xxx
+    path-style-access: false

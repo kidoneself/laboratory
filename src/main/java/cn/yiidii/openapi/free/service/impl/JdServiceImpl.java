@@ -77,7 +77,6 @@ public class JdServiceImpl implements IJdService {
         String gsign = DigestUtil.md5Hex(StrUtil.format("{}{}{}36{}{}", APP_ID, Q_VERSION, timestamp, subCmd, gsalt));
         sign = DigestUtil.md5Hex(StrUtil.format("{}{}{}{}4dtyyzKF3w6o54fJZnmeW3bVHl0$PbXj", APP_ID, Q_VERSION, COUNTRY_CODE, mobile));
         param = StrUtil.format("country_code={}&client_ver=1.0.0&gsign={}&appid={}&mobile={}&sign={}&cmd=36&sub_cmd={}&qversion={}&ts={}", COUNTRY_CODE, gsign, APP_ID, mobile, sign, subCmd, Q_VERSION, timestamp);
-
         response = HttpRequest.post("https://qapplogin.m.jd.com/cgi-bin/qapp/quick")
                 .body(param, ContentType.FORM_URLENCODED.toString())
                 .cookie(ck)

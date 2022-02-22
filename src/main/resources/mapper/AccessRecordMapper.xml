@@ -14,8 +14,8 @@
             device_name as deviceName,
         </if>
         count( id ) count,
-        t2.total,
-        round( count( id ) / t2.total * 100, 2 ) rate
+        (SELECT count(1) total FROM access_record),
+        round( count( id ) / ((SELECT count(1) total FROM access_record)) * 100, 2 ) rate
         FROM
         `access_record` t1
         INNER JOIN ( SELECT count( 1 ) total FROM access_record ) t2 ON 1 = 1
