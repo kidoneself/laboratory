@@ -2,6 +2,7 @@ package cn.yiidii.openapi.free.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.http.ContentType;
@@ -10,21 +11,25 @@ import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.yiidii.openapi.common.constant.RedisKeyConstant;
 import cn.yiidii.openapi.free.model.dto.jd.JdInfo;
+import cn.yiidii.openapi.free.model.dto.jd.QlEnvs;
 import cn.yiidii.openapi.free.service.IJdService;
 import cn.yiidii.openapi.free.service.exception.jd.JdException;
 import cn.yiidii.pigeon.common.redis.core.RedisOps;
+import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 /**
  * @author YiiDii Wang
@@ -42,6 +47,10 @@ public class JdServiceImpl implements IJdService {
 
     private final RedisOps redisOps;
 
+    //    @Value()
+    private static final String qlPath = "http://192.168.68.81:5700";
+    private static final String client_id = "wNKiY6D6hx-_";
+    private static final String client_secret = "_08Y9klr9DVLjSZr14DfrWM4";
 
     @Override
     public JdInfo sendSmsCode(String mobile) throws Exception {
@@ -51,9 +60,7 @@ public class JdServiceImpl implements IJdService {
         // 第一步，获取一堆什么参数
         String sign = DigestUtil.md5Hex(StrUtil.format("{}{}{}36{}sb2cwlYyaCSN1KUv5RHG3tmqxfEb8NKN", APP_ID, Q_VERSION, timestamp, subCmd));
         String param = StrUtil.format("client_ver=1.0.0&gsign={}&appid={}&return_page=https%3A%2F%2Fcrpl.jd.com%2Fn%2Fmine%3FpartnerId%3DWBTF0KYY%26ADTAG%3Dkyy_mrqd%26token%3D&cmd=36&sdk_ver=1.0.0&sub_cmd=1&qversion={}&ts={}", sign, APP_ID, Q_VERSION, timestamp);
-        HttpResponse response = HttpRequest.post("https://qapplogin.m.jd.com/cgi-bin/qapp/quick")
-                .body(param, ContentType.FORM_URLENCODED.toString())
-                .execute();
+        HttpResponse response = HttpRequest.post("https://qapplogin.m.jd.com/cgi-bin/qapp/quick").body(param, ContentType.FORM_URLENCODED.toString()).execute();
         JSONObject responseJo = JSONObject.parseObject(response.body());
         this.checkErr(responseJo);
         JSONObject data = responseJo.getJSONObject("data");
@@ -62,14 +69,7 @@ public class JdServiceImpl implements IJdService {
         String lsid = data.getString("lsid");
         String rsaModulus = data.getString("rsa_modulus");
         String ck = StrUtil.format("guid={}; lsid={}; gsalt={};rsa_modulus={};", guid, lsid, gsalt, rsaModulus);
-        JdInfo jdInfo = JdInfo.builder()
-                .gsalt(gsalt)
-                .guid(guid)
-                .lsId(lsid)
-                .gsalt(gsalt)
-                .rsaModulus(rsaModulus)
-                .preCookie(ck)
-                .build();
+        JdInfo jdInfo = JdInfo.builder().gsalt(gsalt).guid(guid).lsId(lsid).gsalt(gsalt).rsaModulus(rsaModulus).preCookie(ck).build();
 
         // 第二步，发送验证码
         timestamp = System.currentTimeMillis();
@@ -77,15 +77,10 @@ public class JdServiceImpl implements IJdService {
         String gsign = DigestUtil.md5Hex(StrUtil.format("{}{}{}36{}{}", APP_ID, Q_VERSION, timestamp, subCmd, gsalt));
         sign = DigestUtil.md5Hex(StrUtil.format("{}{}{}{}4dtyyzKF3w6o54fJZnmeW3bVHl0$PbXj", APP_ID, Q_VERSION, COUNTRY_CODE, mobile));
         param = StrUtil.format("country_code={}&client_ver=1.0.0&gsign={}&appid={}&mobile={}&sign={}&cmd=36&sub_cmd={}&qversion={}&ts={}", COUNTRY_CODE, gsign, APP_ID, mobile, sign, subCmd, Q_VERSION, timestamp);
-        response = HttpRequest.post("https://qapplogin.m.jd.com/cgi-bin/qapp/quick")
-                .body(param, ContentType.FORM_URLENCODED.toString())
-                .cookie(ck)
-                .execute();
+        response = HttpRequest.post("https://qapplogin.m.jd.com/cgi-bin/qapp/quick").body(param, ContentType.FORM_URLENCODED.toString()).cookie(ck).execute();
         responseJo = JSONObject.parseObject(response.body());
         this.checkErr(responseJo);
-        redisOps.set(StrUtil.format(RedisKeyConstant.JD_LOGIN_TEMP_INFO, mobile),
-                JSONObject.toJSONString(jdInfo),
-                RedisKeyConstant.JD_LOGIN_TEMP_INFO_EXPIRE);
+        redisOps.set(StrUtil.format(RedisKeyConstant.JD_LOGIN_TEMP_INFO, mobile), JSONObject.toJSONString(jdInfo), RedisKeyConstant.JD_LOGIN_TEMP_INFO_EXPIRE);
         return jdInfo;
     }
 
@@ -97,15 +92,11 @@ public class JdServiceImpl implements IJdService {
             throw new JdException(-1, "请先获取验证码");
         }
         JdInfo jdInfo = JSONObject.parseObject(JSONObject.parseObject(o.toString()).toJSONString(), JdInfo.class);
-
         String subCmd = "3";
         long timestamp = System.currentTimeMillis();
         String gsign = StrUtil.format("{}{}{}36{}{}", APP_ID, Q_VERSION, timestamp, subCmd, jdInfo.getGsalt());
         String param = StrUtil.format("country_code={}&client_ver=1.0.0&gsign={}&smscode={}&appid={}&mobile={}&cmd=36&sub_cmd={}&qversion={}&ts={}", COUNTRY_CODE, gsign, code, APP_ID, mobile, subCmd, Q_VERSION, timestamp);
-        HttpResponse response = HttpRequest.post("https://qapplogin.m.jd.com/cgi-bin/qapp/quick")
-                .body(param, ContentType.FORM_URLENCODED.toString())
-                .cookie(jdInfo.getPreCookie())
-                .execute();
+        HttpResponse response = HttpRequest.post("https://qapplogin.m.jd.com/cgi-bin/qapp/quick").body(param, ContentType.FORM_URLENCODED.toString()).cookie(jdInfo.getPreCookie()).execute();
         JSONObject responseJo = JSONObject.parseObject(response.body());
         this.checkErr(responseJo);
         JSONObject data = responseJo.getJSONObject("data");
@@ -113,6 +104,29 @@ public class JdServiceImpl implements IJdService {
         String ptPin = data.getString("pt_pin");
         String cookie = StrUtil.format("pt_key={}; pt_pin={};", ptKey, ptPin);
         redisOps.del(key);
+        List<QlEnvs> allEnvs = this.getAllEnvs();
+        for (QlEnvs env : allEnvs) {
+            if (env.getName().equals("JD_COOKIE")) {
+                String s = ReUtil.get("pin=[\\%\\w]+", env.getValue(), 0);
+                String pin = s.split("=")[1];
+                if (pin.equals(ptPin)) {
+                    String url = StrUtil.format("{}/api/envs?t={}", qlPath, System.currentTimeMillis());
+                    Map<String, Object> prams = Maps.newHashMap();
+                    prams.put("name", "JD_COOKIE");
+                    prams.put("value", cookie);
+                    prams.put("remarks", env.getRemarks());
+                    prams.put("_id", env.get_id());
+                    String token = getQlTokens();
+                    String body = HttpRequest.put(url).header(Header.AUTHORIZATION, "Bearer " + token)
+                            .body(JSONUtils.toJSONString(prams)).execute().body();
+                    System.out.println(body);
+                    String enableUrl = StrUtil.format("{}/open/envs/enable?t={}", qlPath, System.currentTimeMillis());
+                    String enableBody = HttpRequest.put(url).header(Header.AUTHORIZATION, "Bearer " + token)
+                            .body(JSONUtils.toJSONString(prams)).execute().body();
+                    System.out.println(body);
+                }
+            }
+        }
         return new JdInfo().builder().cookie(cookie).build();
     }
 
@@ -123,10 +137,7 @@ public class JdServiceImpl implements IJdService {
         jo.put("action", "to");
         jo.put("to", cn.hutool.core.net.URLEncoder.ALL.encode("https://plogin.m.jd.com/cgi-bin/m/thirdapp_auth_page?token=AAEAIEijIw6wxF2s3bNKF0bmGsI8xfw6hkQT6Ui2QVP7z1Xg&client_type=android&appid=879&appup_type=1", Charset.forName(CharsetUtil.UTF_8)));
         // 请求genToken接口获取
-        String body = HttpRequest.post("https://api.m.jd.com:443/client.action?functionId=genToken&clientVersion=10.1.2&client=android&lang=zh_CN&uuid=09d53a5653402b1f&st=1630392618706&sign=53904736db53eebc01ca70036e7187d6&sv=120")
-                .header(Header.COOKIE, key)
-                .body(StrUtil.format("body={}", cn.hutool.core.net.URLEncoder.ALL.encode(jo.toJSONString(), Charset.forName(CharsetUtil.UTF_8))), ContentType.FORM_URLENCODED.getValue())
-                .execute().body();
+        String body = HttpRequest.post("https://api.m.jd.com:443/client.action?functionId=genToken&clientVersion=10.1.2&client=android&lang=zh_CN&uuid=09d53a5653402b1f&st=1630392618706&sign=53904736db53eebc01ca70036e7187d6&sv=120").header(Header.COOKIE, key).body(StrUtil.format("body={}", cn.hutool.core.net.URLEncoder.ALL.encode(jo.toJSONString(), Charset.forName(CharsetUtil.UTF_8))), ContentType.FORM_URLENCODED.getValue()).execute().body();
         JSONObject bodyJo = JSONObject.parseObject(body);
 
         // 跳转参数
@@ -145,10 +156,33 @@ public class JdServiceImpl implements IJdService {
         if (StrUtil.contains(ptKey, "fake_") || StrUtil.contains(ptPin, "***")) {
             throw new JdException(-1, "非法faker用户");
         }
-        return JdInfo.builder()
-                .preCookie(response.getCookieStr())
-                .cookie(StrUtil.format("pt_key={}; pt_pin={}", ptKey, ptPin))
-                .build();
+        return JdInfo.builder().preCookie(response.getCookieStr()).cookie(StrUtil.format("pt_key={}; pt_pin={}", ptKey, ptPin)).build();
+    }
+
+
+    @Override
+    public List<QlEnvs> getAllEnvs() {
+        String token = getQlTokens();
+        String url = StrUtil.format("{}/open/envs", qlPath);
+        String body = HttpRequest.get(url).header("Authorization", "Bearer " + token).execute().body();
+        JSONObject bodyJo = JSONObject.parseObject(body);
+        if (bodyJo != null && bodyJo.getInteger("code") != 200) {
+            throw new JdException(-1, "青龙环境配置错误");
+        }
+        JSONArray envs = bodyJo.getJSONArray("data");
+        List<QlEnvs> qlEnvs = envs.toJavaList(QlEnvs.class);
+        return qlEnvs;
+    }
+
+    private static String getQlTokens() {
+        String url = StrUtil.format("{}/open/auth/token?client_id={}&client_secret={}", qlPath, client_id, client_secret);
+        String body = HttpRequest.get(url).execute().body();
+        JSONObject bodyJo = JSONObject.parseObject(body);
+        if (bodyJo != null && bodyJo.getInteger("code") != 200) {
+            throw new JdException(-1, "青龙环境配置错误");
+        }
+        String token = bodyJo.getJSONObject("data").getString("token");
+        return token;
     }
 
 
@@ -156,20 +190,10 @@ public class JdServiceImpl implements IJdService {
         if (CollectionUtils.isEmpty(setCookiesList)) {
             return Maps.newHashMap();
         }
-        return setCookiesList.stream()
-                .map(item -> item.split(";"))
-                .flatMap(Arrays::stream)
-                .map(String::trim)
-                .filter(s -> {
-                    final String[] split = s.split("=");
-                    return split.length > 1 && StrUtil.isNotBlank(split[1]);
-                })
-                .distinct()
-                .collect(Collectors.toMap(
-                        s -> s.split("=")[0],
-                        s -> s.split("=")[1],
-                        (s1, s2) -> s2
-                ));
+        return setCookiesList.stream().map(item -> item.split(";")).flatMap(Arrays::stream).map(String::trim).filter(s -> {
+            final String[] split = s.split("=");
+            return split.length > 1 && StrUtil.isNotBlank(split[1]);
+        }).distinct().collect(Collectors.toMap(s -> s.split("=")[0], s -> s.split("=")[1], (s1, s2) -> s2));
     }
 
     private void checkErr(JSONObject responseJo) {
@@ -177,5 +201,23 @@ public class JdServiceImpl implements IJdService {
         if (errCode != 0) {
             throw new JdException(-1, responseJo.getString("err_msg"));
         }
+    }
+
+
+    public static void main(String[] args) {
+        String url = StrUtil.format("{}/open/envs?t={}", qlPath, System.currentTimeMillis());
+        Map<String, Object> prams = Maps.newHashMap();
+        prams.put("name", "JD_COOKIE");
+        prams.put("value", "1111111");
+        prams.put("remarks", "kidoneself");
+        prams.put("_id", "94TgjFcbSNOesoEG");
+        String token = getQlTokens();
+        String body = HttpRequest.put(url).header(Header.AUTHORIZATION, "Bearer " + token)
+                .body(JSONUtils.toJSONString(prams)).execute().body();
+        System.out.println(body);
+        String enableUrl = StrUtil.format("{}/open/envs/enable?t={}", qlPath, System.currentTimeMillis());
+        String enableBody = HttpRequest.put(url).header(Header.AUTHORIZATION, "Bearer " + token)
+                .body(JSONUtils.toJSONString(prams)).execute().body();
+        System.out.println(body);
     }
 }

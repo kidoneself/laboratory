@@ -1,6 +1,9 @@
 package cn.yiidii.openapi.free.service;
 
 import cn.yiidii.openapi.free.model.dto.jd.JdInfo;
+import cn.yiidii.openapi.free.model.dto.jd.QlEnvs;
+
+import java.util.List;
 
 /**
  * 京东业务接口
@@ -39,4 +42,9 @@ public interface IJdService {
      * @throws Exception e
      */
     JdInfo getByWsKey(String wsKey) throws Exception;
+
+
+
+    List<QlEnvs> getAllEnvs();
+
 }
