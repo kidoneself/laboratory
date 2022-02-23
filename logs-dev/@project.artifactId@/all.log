@@ -7263,3 +7263,62 @@ Using generated security password: 538d857e-26dd-4ab9-8fdb-d58232a30e16
 2022-02-23 01:37:21.687 [main:5358] [] [io.undertow.servlet.?:?] Initializing Spring embedded WebApplicationContext
 2022-02-23 01:37:21.687 [main:5358] [] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.?:?] Root WebApplicationContext: initialization completed in 2170 ms
 2022-02-23 01:37:22.219 [main:5890] [] [org.redisson.Version.?:?] Redisson 3.10.6
+2022-02-23 01:38:09.789 [main:3142] [] [cn.yiidii.openapi.OpenapiApplication.?:?] The following profiles are active: prod
+2022-02-23 01:38:10.572 [main:3925] [] [org.springframework.context.annotation.AutoProxyRegistrar.?:?] AutoProxyRegistrar was imported but no annotations were found having both 'mode' and 'proxyTargetClass' attributes of type AdviceMode and boolean respectively. This means that auto proxy creator registration and configuration may not have occurred as intended, and components may not be proxied as expected. Check to ensure that AutoProxyRegistrar has been @Import'ed on the same class where these annotations are declared; otherwise remove the import of AutoProxyRegistrar altogether.
+2022-02-23 01:38:10.894 [main:4247] [] [org.springframework.data.repository.config.RepositoryConfigurationDelegate.?:?] Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-02-23 01:38:10.896 [main:4249] [] [org.springframework.data.repository.config.RepositoryConfigurationDelegate.?:?] Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2022-02-23 01:38:10.930 [main:4283] [] [org.springframework.data.repository.config.RepositoryConfigurationDelegate.?:?] Finished Spring Data repository scanning in 21ms. Found 0 Redis repository interfaces.
+2022-02-23 01:38:11.188 [main:4541] [] [org.springframework.cloud.context.scope.GenericScope.?:?] BeanFactory id=f8846804-e0be-3263-9635-b0d6525e2beb
+2022-02-23 01:38:11.428 [main:4781] [] [org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.?:?] Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@5e95a4' of type [org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-02-23 01:38:11.436 [main:4789] [] [org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.?:?] Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-02-23 01:38:11.505 [main:4858] [] [org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.?:?] Bean 'strategyProperties' of type [cn.yiidii.pigeon.common.strategy.prop.StrategyProperties$$EnhancerBySpringCGLIB$$53705706] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-02-23 01:38:11.734 [main:5087] [] [io.undertow.websockets.jsr.?:?] UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+2022-02-23 01:38:11.755 [main:5108] [] [io.undertow.servlet.?:?] Initializing Spring embedded WebApplicationContext
+2022-02-23 01:38:11.755 [main:5108] [] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.?:?] Root WebApplicationContext: initialization completed in 1944 ms
+2022-02-23 01:38:12.224 [main:5577] [] [org.redisson.Version.?:?] Redisson 3.10.6
+2022-02-23 01:38:13.394 [redisson-netty-1-2:6747] [] [org.redisson.connection.pool.MasterPubSubConnectionPool.?:?] 1 connections initialized for 101.43.9.197/101.43.9.197:6379
+2022-02-23 01:38:13.394 [redisson-netty-1-3:6747] [] [org.redisson.connection.pool.MasterConnectionPool.?:?] 32 connections initialized for 101.43.9.197/101.43.9.197:6379
+2022-02-23 01:38:13.807 [main:7160] [] [com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure.?:?] Init DruidDataSource
+2022-02-23 01:38:13.903 [main:7256] [] [com.alibaba.druid.pool.DruidDataSource.?:?] {dataSource-1} inited
+2022-02-23 01:38:13.984 [main:7337] [] [com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean.?:?] Can't find class in '[cn.yiidii.openapi.uaa.model.enums]' package. Please check your configuration.
+2022-02-23 01:38:14.849 [main:8202] [] [org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor.?:?] Initializing ExecutorService
+2022-02-23 01:38:14.916 [main:8269] [] [cn.yiidii.openapi.common.config.ThreadPoolConfig.?:?] 初始化通用线程池: {"activeCount":0,"corePoolSize":7,"daemon":false,"keepAliveSeconds":10,"maxPoolSize":13,"poolSize":0,"threadNamePrefix":"Async-Executor-%s","threadPoolExecutor":{"activeCount":0,"completedTaskCount":0,"corePoolSize":7,"largestPoolSize":0,"maximumPoolSize":13,"poolSize":0,"queue":[],"rejectedExecutionHandler":{},"shutdown":false,"taskCount":0,"terminated":false,"terminating":false,"threadFactory":{"$ref":".."}},"threadPriority":5}
+2022-02-23 01:38:14.917 [main:8270] [] [org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor.?:?] Initializing ExecutorService 'asyncExecutor'
+2022-02-23 01:38:15.040 [main:8393] [] [com.github.dozermapper.core.DozerBeanMapperBuilder.?:?] Initializing Dozer. Version: 6.5.0, Thread Name: main
+2022-02-23 01:38:15.040 [main:8393] [] [com.github.dozermapper.core.util.RuntimeUtils.?:?] OSGi support is false
+2022-02-23 01:38:15.045 [main:8398] [] [com.github.dozermapper.core.config.resolvers.LegacyPropertiesSettingsResolver.?:?] Trying to find Dozer configuration file: dozer.properties
+2022-02-23 01:38:15.051 [main:8404] [] [com.github.dozermapper.core.config.resolvers.LegacyPropertiesSettingsResolver.?:?] Failed to find dozer.properties via com.github.dozermapper.core.config.resolvers.LegacyPropertiesSettingsResolver.
+2022-02-23 01:38:15.054 [main:8407] [] [com.github.dozermapper.core.el.ELExpressionFactory.?:?] javax.el support is true
+2022-02-23 01:38:15.124 [main:8477] [] [cn.yiidii.pigeon.common.strategy.component.HandlerContextBeanPostProcessor.?:?] 策略业务组件扫描basePackage: cn.yiidii.openapi; classPath: classpath*:cn/yiidii/openapi/**/*.class
+2022-02-23 01:38:15.180 [main:8533] [] [cn.yiidii.pigeon.common.strategy.component.HandlerContextBeanPostProcessor.?:?] 扫描到策略业务handler: ["ChinaUnicomHandler","douYinRmWaterMark","kuaiShouRmWaterMark"]
+2022-02-23 01:38:15.199 [main:8552] [] [org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor.?:?] Initializing ExecutorService
+2022-02-23 01:38:15.199 [main:8552] [] [cn.yiidii.openapi.common.config.ThreadPoolConfig.?:?] 初始化定时任务线程池: {"activeCount":0,"corePoolSize":7,"daemon":false,"keepAliveSeconds":10,"maxPoolSize":13,"poolSize":0,"threadNamePrefix":"Async-scheduledExecutor-%s","threadPoolExecutor":{"activeCount":0,"completedTaskCount":0,"corePoolSize":7,"largestPoolSize":0,"maximumPoolSize":13,"poolSize":0,"queue":[],"rejectedExecutionHandler":{},"shutdown":false,"taskCount":0,"terminated":false,"terminating":false,"threadFactory":{"$ref":".."}},"threadPriority":5}
+2022-02-23 01:38:15.200 [main:8553] [] [org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor.?:?] Initializing ExecutorService 'scheduledExecutor'
+2022-02-23 01:38:15.212 [main:8565] [] [org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration.?:?] 
+
+Using generated security password: c9a53e96-7095-46d9-936a-a064bd85873c
+
+2022-02-23 01:38:15.237 [main:8590] [] [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter.?:?] Unable to create an RSA verifier from verifierKey (ignoreable if using MAC)
+2022-02-23 01:38:15.262 [main:8615] [] [cn.yiidii.rocketmq.config.MessageConverterConfiguration.?:?] Init rocketmq objectMapper success.
+2022-02-23 01:38:15.300 [main:8653] [] [cn.yiidii.rocketmq.config.MessageConverterConfiguration.?:?] Init rocketMqMessageConverter success.
+2022-02-23 01:38:15.531 [main:8884] [] [cn.yiidii.pigeon.common.security.handler.PigeonAccessDeniedHandler.?:?] ===== pigeon AccessDeniedHandler init
+2022-02-23 01:38:15.867 [main:9220] [] [org.thymeleaf.templatemode.TemplateMode.?:?] [THYMELEAF][main] Template Mode 'HTML5' is deprecated. Using Template Mode 'HTML' instead.
+2022-02-23 01:38:15.888 [main:9241] [] [cn.yiidii.pigeon.common.core.config.GlobalExceptionHandler.?:?] Condition type is WebApplication, init GlobalExceptionHandler...
+2022-02-23 01:38:16.456 [main:9809] [] [cn.yiidii.pigeon.common.security.config.ResourceServerConfig.?:?] ResourceServerConfig ignoreUrls: [/oauth/token, /doc.html, /webjars/css/**, /webjars/js/**, /v2/api-docs, /swagger-resources, /favicon.ico, /accessRecord/**, /jd/**, /telecom/**, /wm/**, /test/**, /free/**, /dict/**, /attachment/**, /jd.html]
+2022-02-23 01:38:16.502 [main:9855] [] [org.springframework.security.web.DefaultSecurityFilterChain.?:?] Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@918ab9, org.springframework.security.web.context.SecurityContextPersistenceFilter@1aade3c, org.springframework.security.web.header.HeaderWriterFilter@18c6d3e, org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter@1d0ad00, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@18a5ec7, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1d59886, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@115f1d5, org.springframework.security.web.session.SessionManagementFilter@74300b, org.springframework.security.web.access.ExceptionTranslationFilter@41db2c, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@147536]
+2022-02-23 01:38:16.662 [main:10015] [] [org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler.?:?] Initializing ExecutorService 'taskScheduler'
+2022-02-23 01:38:17.176 [main:10529] [] [org.springframework.cloud.security.oauth2.SpringCloudSecurityAutoConfiguration.?:?] All Spring Cloud Security modules and starters are deprecated. They will be moved to individual projects in the next major release.
+2022-02-23 01:38:17.182 [main:10535] [] [org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver.?:?] Exposing 2 endpoint(s) beneath base path '/actuator'
+2022-02-23 01:38:17.298 [main:10651] [] [io.undertow.?:?] starting server: Undertow - 2.1.4.Final
+2022-02-23 01:38:17.304 [main:10657] [] [org.xnio.?:?] XNIO version 3.8.0.Final
+2022-02-23 01:38:17.310 [main:10663] [] [org.xnio.nio.?:?] XNIO NIO Implementation Version 3.8.0.Final
+2022-02-23 01:38:17.335 [main:10688] [] [org.jboss.threads.?:?] JBoss Threads version 3.1.0.Final
+2022-02-23 01:38:17.374 [main:10727] [] [org.springframework.boot.web.embedded.undertow.UndertowWebServer.?:?] Undertow started on port(s) 1170 (http)
+2022-02-23 01:38:17.826 [main:11179] [] [cn.yiidii.openapi.OpenapiApplication.?:?] Started OpenapiApplication in 11.054 seconds (JVM running for 12.075)
+2022-02-23 01:38:29.249 [XNIO-1 task-1:22602] [] [io.undertow.servlet.?:?] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-02-23 01:38:29.249 [XNIO-1 task-1:22602] [] [org.springframework.web.servlet.DispatcherServlet.?:?] Initializing Servlet 'dispatcherServlet'
+2022-02-23 01:38:29.260 [XNIO-1 task-1:22613] [] [org.springframework.web.servlet.DispatcherServlet.?:?] Completed initialization in 11 ms
+2022-02-23 01:38:29.581 [XNIO-1 task-1:22934] [] [cn.yiidii.pigeon.common.core.config.GlobalExceptionHandler.?:?] BaseUncheckedException: 请先获取验证码
+2022-02-23 01:38:49.687 [XNIO-1 task-2:43040] [] [cn.yiidii.pigeon.common.core.config.GlobalExceptionHandler.?:?] NullPointerException: null
+2022-02-23 01:38:53.337 [XNIO-1 task-2:46690] [] [cn.yiidii.pigeon.common.core.config.GlobalExceptionHandler.?:?] BaseUncheckedException: 操作过于频繁，请24小时后再试，或先使用其他方式登录
+2022-02-23 01:40:10.697 [XNIO-1 task-2:124050] [] [cn.yiidii.pigeon.common.core.config.GlobalExceptionHandler.?:?] BaseUncheckedException: 操作过于频繁，请24小时后再试，或先使用其他方式登录
